@@ -1,0 +1,29 @@
+version '3'
+
+services:
+  redis:
+    image: bitnami/redis
+  mysql-codepostaux:
+    image: bitnami/mysql
+  import:
+    build: app-cp/
+    volumes:
+      - app-cp/data:/tmp
+    command: python /opt/api-codepostaux/import.py && python /opt/api-codepostaux/mysql2redis.py
+    depands_on:
+      - mysql
+      - redis
+      
+  app:
+    build: app-cp/
+    ports: 
+      - "8000:8000"
+    depands_on:
+      - import
+
+  app-paris:
+    build: app-cp/
+    ports: 
+      - "8001:8001"
+    depands_on:
+      - import
