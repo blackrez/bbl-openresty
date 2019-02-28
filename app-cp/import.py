@@ -11,7 +11,7 @@ create_db = ("CREATE DATABASE IF NOT EXISTS codepostaux;"
             "USE codepostaux;")
 
 cursor.execute(create_db)
-add_cp  = ("INSERT INTO codepostaux" 
+add_cp  = ("INSERT INTO codepostaux"
            "(code_insee, nom_commune, code_postal, libelle, ligne_5, centroid) " 
            "VALUES (%s, %s, %s, %s, %s, ST_GeomFromText(%s, 4326))") 
 
@@ -20,7 +20,7 @@ with open('/tmp/laposte_hexasmal.csv') as csvfile:
     cpreader = csv.reader(csvfile, delimiter=";") 
     fitstline = True 
     for row in cpreader: 
-        print(row) 
+        print(row)
         if fitstline: 
             fitstline = False 
         else: 

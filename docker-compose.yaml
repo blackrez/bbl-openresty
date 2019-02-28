@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   redis:
     image: bitnami/redis
@@ -28,6 +27,7 @@ services:
     build: app-cp/
     ports: 
       - "8000:8000"
+    restart: always
     depends_on:
       - import
 
@@ -35,6 +35,7 @@ services:
     build: app-cp/
     ports: 
       - "8001:8001"
+    restart: always
     depends_on:
       - import
 
