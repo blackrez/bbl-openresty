@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 app.r = redis.Redis(host='redis', port=6379, db=0)
 
-dbconfig = {'user':"brian", 'host':'mysql-codepostaux' 'database':"codepostaux", 'password':"nice_try haxx0rs"}
+dbconfig = {'user':"root", 'host':'mysql-codepostaux', 'database':"codepostaux"}
 app.cnx_pool= mysql.connector.pooling.MySQLConnectionPool(pool_name = "mypool",
                               **dbconfig)
 

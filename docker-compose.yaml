@@ -1,29 +1,41 @@
-version '3'
+version: '3'
 
 services:
   redis:
     image: bitnami/redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+  
   mysql-codepostaux:
     image: bitnami/mysql
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+  
   import:
     build: app-cp/
     volumes:
-      - app-cp/data:/tmp
-    command: python /opt/api-codepostaux/import.py && python /opt/api-codepostaux/mysql2redis.py
-    depands_on:
-      - mysql
+      - ./app-cp/data/:/tmp/
+    command:  python /opt/api-codepostaux/import.py && python /opt/api-codepostaux/mysql2redis.py
+    depends_on:
+      - mysql-codepostaux
       - redis
-      
+
   app:
     build: app-cp/
     ports: 
       - "8000:8000"
-    depands_on:
+    depends_on:
       - import
 
   app-paris:
     build: app-cp/
     ports: 
       - "8001:8001"
-    depands_on:
+    depends_on:
       - import
+
+  
